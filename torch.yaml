@@ -1,0 +1,6 @@
+name: torch
+channels:
+  - defaults
+dependencies:
+  - pytorch
+prefix: /root/miniconda3/envs/torch
