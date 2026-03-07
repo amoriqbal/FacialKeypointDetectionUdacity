@@ -55,6 +55,10 @@ class FacialKeypointsDataset(Dataset):
 class Normalize(object):
     """Convert a color image to grayscale and normalize the color range to [0,1]."""        
 
+    def __init__(self, mean=100, std=50):
+        self.mean = mean
+        self.std = std
+
     def __call__(self, sample):
         image, key_pts = sample['image'], sample['keypoints']
         
@@ -73,7 +77,7 @@ class Normalize(object):
         # scale keypoints to be centered around 0 with proper normalization
         # Actual statistics from data: mean=49.07, std=13.00
         # Formula: (keypoints - mean) / std
-        key_pts_copy = (key_pts_copy - 49.07) / 13.00
+        key_pts_copy = (key_pts_copy - self.mean) / self.std
 
 
         return {'image': image_copy, 'keypoints': key_pts_copy}

@@ -1,6 +1,23 @@
 name: torch
 channels:
   - defaults
-dependencies:
   - pytorch
-prefix: /root/miniconda3/envs/torch
+  - conda-forge
+  - nvidia
+dependencies:
+  - jupyterlab
+  - scipy
+  - pandas
+  - numpy
+  - python=3.12
+  - seaborn
+  - matplotlib
+  - ipython
+  - pytorch-cuda=11.8
+  - torchvision
+  - torchaudio
+  - pytorch
+  - scikit-learn
+  - ipykernel
+  - opencv
+prefix: C:\Users\amori\anaconda3\envs\torch
