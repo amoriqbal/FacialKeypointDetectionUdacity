@@ -39,19 +39,16 @@ class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(1, 32, 7, padding=1) # 224 -> 224
-        self.maxp1 = nn.MaxPool2d(2, 2) # 224 -> 112
+        self.maxp1 = nn.MaxPool2d(4, 4) # 224 -> 112
         self.block1 = Block(32, 64, kernels=[3, 3]) # 112 -> 112
         self.maxp2 = nn.MaxPool2d(2, 2) # 112 -> 56
         self.block2 = Block(64, 128, kernels=[3, 3]) # 56 -> 56
-        self.maxp3 = nn.MaxPool2d(2, 2) # 56 -> 28
         self.block3 = Block(128, 256, kernels=[3, 3]) # 28 -> 28
-        self.maxp4 = nn.MaxPool2d(2, 2) # 28 -> 14
         self.block4 = Block(256, 512, kernels=[3, 3]) # 14 -> 14
-        self.maxp5 = nn.MaxPool2d(2, 2) # 14 -> 7
-        self.block5 = Block(512, 1024, kernels=[3, 3]) # 7 -> 7
+        self.block5 = Block(512, 1024, kernels=[3, 3], stride = 2) # 7 -> 7
 
         self.avgp = nn.AvgPool2d(2, 2) # 7 -> 3
-        self.fc1 = nn.Linear(1024*3*3, 2048)
+        self.fc1 = nn.Linear(4096, 2048)
         self.fc2 = nn.Linear(2048, 512)
         self.fc3 = nn.Linear(512, 136)
 
@@ -61,11 +58,8 @@ class Net(nn.Module):
         x = self.block1(x)
         x = self.maxp2(x)
         x = self.block2(x)
-        x = self.maxp3(x)
         x = self.block3(x)
-        x = self.maxp4(x)
         x = self.block4(x)
-        x = self.maxp5(x)
         x = self.block5(x)
         x = self.avgp(x)
         x = x.view(x.size(0), -1)
