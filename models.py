@@ -25,21 +25,15 @@ class Block(nn.Module):
         self.conv_layers += [nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=stride)]
         for kernel in kernels:
             self.conv_layers += [nn.Conv2d(out_channels, out_channels, kernel_size=kernel, stride=stride, padding=kernel//2)]
-        
+        self.conv_layers = nn.ModuleList(self.conv_layers)
         self.batch_norm = nn.BatchNorm2d(out_channels)
     
     def forward(self, x):
         for layer in self.conv_layers:
             x = layer(x)
-        x = F.relu(x)
         x = self.batch_norm(x)
+        x = F.relu(x)
         return x
-    
-    def to(self, device):
-        for layer in self.conv_layers:
-            layer.to(device)
-        self.batch_norm.to(device)
-        return self
 
 class Net(nn.Module):
     def __init__(self):
@@ -79,24 +73,6 @@ class Net(nn.Module):
         x = F.relu(self.fc2(x))
         x = self.fc3(x)
         return x
-    
-    def to(self, device):
-        self.conv1.to(device)
-        self.maxp1.to(device)
-        self.block1.to(device)
-        self.maxp2.to(device)
-        self.block2.to(device)
-        self.maxp3.to(device)
-        self.block3.to(device)
-        self.maxp4.to(device)
-        self.block4.to(device)
-        self.maxp5.to(device)
-        self.block5.to(device)
-        self.avgp.to(device)
-        self.fc1.to(device)
-        self.fc2.to(device)
-        self.fc3.to(device)
-        return self
 
 
 
